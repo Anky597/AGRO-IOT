@@ -18,7 +18,7 @@ User-friendly interface: The Gradio interface provides an intuitive way for user
 Clone the repository:
 
 Bash
-git clone https://github.com/your-username/AGRO-IOT.git
+git clone https://github.com/Anky597/AGRO-IOT
 
 
 Install dependencies:
