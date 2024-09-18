@@ -41,3 +41,7 @@ Outputs:
 
 Disease prediction: The predicted disease name will be displayed.
 Additional information: The Gemini LLM will provide relevant information about the predicted disease, including symptoms, causes, treatment options, and prevention strategies.
+
+Circuit Image: - 
+<img width="706" alt="Screenshot 2024-09-18 at 7 00 02 PM" src="https://github.com/user-attachments/assets/dcecb664-0968-41b6-b65b-8a6805b82a4a">
+
