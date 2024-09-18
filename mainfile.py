@@ -1,15 +1,14 @@
-import google.generativeai as genai
-from pathlib import Path
+import streamlit as st
 import gradio as gr
+import gradio.routes
+from pathlib import Path
+import google.generativeai as genai
 from dotenv import load_dotenv
 import os
 
-# Load environment variables from a .env file
+# Load environment variables
 load_dotenv()
-
-# Configure the GenerativeAI API key using the loaded environment variable
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-
+genai.configure(api_key=os.getenv("Add you own API for google gemini models"))
 
 generation_config = {
     "temperature": 0.4,
@@ -22,25 +21,23 @@ safety_settings = [
     for category in ["HARASSMENT", "HATE_SPEECH", "SEXUALLY_EXPLICIT", "DANGEROUS_CONTENT"]
 ]
 
-
 model = genai.GenerativeModel(
     model_name="gemini-pro-vision",
     generation_config=generation_config,
     safety_settings=safety_settings,
 )
+
 def read_image_data(file_path):
     image_path = Path(file_path)
     if not image_path.exists():
         raise FileNotFoundError(f"Could not find image: {image_path}")
     return {"mime_type": "image/jpeg", "data": image_path.read_bytes()}
 
-# Function to generate a response based on a prompt and an image path
 def generate_gemini_response(prompt, image_path):
     image_data = read_image_data(image_path)
     response = model.generate_content([prompt, image_data])
     return response.text
 
-# Initial input prompt for the plant pathologist
 input_prompt = """
 As a highly skilled plant pathologist, your expertise is indispensable in our pursuit of maintaining optimal plant health. You will be provided with information or samples related to plant diseases, and your role involves conducting a detailed analysis to identify the specific issues, propose solutions, and offer recommendations.
 
@@ -62,27 +59,27 @@ As a highly skilled plant pathologist, your expertise is indispensable in our pu
 Your role is pivotal in ensuring the health and productivity of plants. Proceed to analyze the provided information or samples, adhering to the structured 
 """
 
-# Function to process uploaded files and generate a response
 def process_uploaded_files(files):
     file_path = files[0].name if files else None
     response = generate_gemini_response(input_prompt, file_path) if file_path else None
     return file_path, response
 
-# Gradio interface setup
-with gr.Blocks() as demo:
-    file_output = gr.Textbox()
-    image_output = gr.Image()
-    combined_output = [image_output, file_output]
+# Define the Gradio interface
+def gradio_interface():
+    with gr.Blocks() as demo:
+        file_output = gr.Textbox()
+        image_output = gr.Image()
+        combined_output = [image_output, file_output]
 
-    # Upload button for user to provide images
-    upload_button = gr.UploadButton(
-        "Click to Upload an Image",
-        file_types=["image"],
-        file_count="multiple",
-    )
-     # Set up the upload button to trigger the processing function
-    upload_button.upload(process_uploaded_files, upload_button, combined_output)
+        upload_button = gr.UploadButton(
+            "Click to Upload an Image",
+            file_types=["image"],
+            file_count="multiple",
+        )
+        upload_button.upload(process_uploaded_files, upload_button, combined_output)
 
-# Launch the Gradio interface with debug mode enabled
-demo.launch(debug=True)
+    return demo
 
+# Create the Streamlit app
+st.title("Gradio App Hosted on Streamlit")
+gradio_interface().launch(inline=True)
