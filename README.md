@@ -1,1 +1,3 @@
 # AGRO-IOT
+##sumery for smart irrigation system
+The "Smart Irrigation System Using ESP32 & Blynk App" is an IoT-based project for automated irrigation. It utilizes ESP32, soil moisture and water level sensors, DHT11 sensor, relay module. The ESP32 connects to Blynk, enabling remote monitoring of soil conditions. The system activates the water pump based on soil moisture, temperature, and humidity. Automatic mode irrigates the field when moisture is low, while Manual mode allows manual control. The Blynk app displays real-time data on soil moisture, water level, and environmental conditions. The project is ideal for farms, and its video provides a concise overview of its functionality.
